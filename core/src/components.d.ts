@@ -1776,6 +1776,7 @@ export namespace Components {
          */
         "onWillDismiss": <T = any>() => Promise<OverlayEventDetail<T>>;
         "overlayIndex": number;
+        "prefersScrollingWhenScrolledToEdge": boolean;
         /**
           * Present the modal overlay after it has been created.
          */
@@ -5869,6 +5870,7 @@ declare namespace LocalJSX {
          */
         "onWillPresent"?: (event: IonModalCustomEvent<void>) => void;
         "overlayIndex": number;
+        "prefersScrollingWhenScrolledToEdge"?: boolean;
         /**
           * The element that presented the modal. This is used for card presentation effects and for stacking multiple modals on top of each other. Only applies in iOS mode.
          */

@@ -49,7 +49,8 @@ export const createSheetGesture = (
   breakpoints: number[] = [],
   getCurrentBreakpoint: () => number,
   onDismiss: () => void,
-  onBreakpointChange: (breakpoint: number) => void
+  onBreakpointChange: (breakpoint: number) => void,
+  prefersScrollingWhenScrolledToEdge: boolean
 ) => {
   // Defaults for the sheet swipe animation
   const defaultBackdrop = [
@@ -136,13 +137,25 @@ export const createSheetGesture = (
     }
   }
 
-  if (contentEl && currentBreakpoint !== maxBreakpoint) {
+  // Scroll should be disabled on smaller breakpoints when the user prefers scrolling when scrolled to edge
+  // otherwise scrolling is enabled on all breakpoints
+  if (contentEl && prefersScrollingWhenScrolledToEdge && currentBreakpoint !== maxBreakpoint) {
     contentEl.scrollY = false;
+  }
+
+  // If `prefersScrollingWhenScrolledToEdge` is false, we need to set the height of the ion-page to display all the content.
+  // Otherwise, the content will be cut off at the bottom when the sheet is visible for the first time.
+  if (!prefersScrollingWhenScrolledToEdge) {
+    const transformSnapNumber = (1 - currentBreakpoint) * 100;
+    const ionPageHeight = 100 - transformSnapNumber;
+    const ionPage = baseEl.querySelector('.ion-page');
+    (ionPage as any).style.setProperty('height', `${ionPageHeight}%`);
   }
 
   const canStart = (detail: GestureDetail) => {
     /**
      * If the sheet is fully expanded and
+     * `prefersScrollingWhenScrolledToEdge` is true and
      * the user is swiping on the content,
      * the gesture should not start to
      * allow for scrolling on the content.
@@ -150,7 +163,7 @@ export const createSheetGesture = (
     const content = (detail.event.target! as HTMLElement).closest('ion-content');
     currentBreakpoint = getCurrentBreakpoint();
 
-    if (currentBreakpoint === 1 && content) {
+    if (prefersScrollingWhenScrolledToEdge && currentBreakpoint === 1 && content) {
       return false;
     }
 
@@ -179,6 +192,16 @@ export const createSheetGesture = (
      */
     if (contentEl) {
       contentEl.scrollY = false;
+
+      if (!prefersScrollingWhenScrolledToEdge) {
+        // unset height to its initial value
+        // This will be reset to 100% when it was assigned by
+        // ion-modal > .ion-page { height: 100% }
+        // This is necessary else the element will have
+        // a lot of white space at the bottom
+        const ionPage = baseEl.querySelector('.ion-page');
+        (ionPage as any).style.removeProperty('height');
+      }
     }
 
     raf(() => {
@@ -335,11 +358,20 @@ export const createSheetGesture = (
                   onBreakpointChange(currentBreakpoint);
 
                   /**
-                   * If the sheet is fully expanded, we can safely
+                   * If the sheet is fully expanded and `prefersScrollingWhenScrolledToEdge` is true, we can safely
                    * enable scrolling again.
+                   * If `prefersScrollingWhenScrolledToEdge` is false, we can safely enable scrolling again regardless of the breakpoint.
                    */
-                  if (contentEl && currentBreakpoint === breakpoints[breakpoints.length - 1]) {
+                  if (contentEl && (currentBreakpoint === maxBreakpoint || !prefersScrollingWhenScrolledToEdge)) {
                     contentEl.scrollY = true;
+                  }
+
+                  // If `prefersScrollingWhenScrolledToEdge` is false, we need to set the height of the ion-page to display all the content.
+                  if (!prefersScrollingWhenScrolledToEdge) {
+                    const transformSnapNumber = (1 - snapToBreakpoint) * 100;
+                    const ionPageHeight = 100 - transformSnapNumber;
+                    const ionPage = baseEl.querySelector('.ion-page');
+                    (ionPage as any).style.setProperty('height', `${ionPageHeight}%`);
                   }
 
                   /**

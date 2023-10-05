@@ -215,6 +215,8 @@ export class Modal implements ComponentInterface, OverlayInterface {
    */
   @Prop() htmlAttributes?: { [key: string]: any };
 
+  @Prop() prefersScrollingWhenScrolledToEdge = true;
+
   /**
    * If `true`, the modal will open. If `false`, the modal will close.
    * Use this if you need finer grained control over presentation, otherwise
@@ -615,7 +617,8 @@ export class Modal implements ComponentInterface, OverlayInterface {
           this.currentBreakpoint = breakpoint;
           this.ionBreakpointDidChange.emit({ breakpoint });
         }
-      }
+      },
+      this.prefersScrollingWhenScrolledToEdge
     );
 
     this.gesture = gesture;
