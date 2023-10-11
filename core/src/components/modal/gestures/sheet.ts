@@ -82,6 +82,8 @@ export const createSheetGesture = (
   const backdropAnimation = animation.childAnimations.find((ani) => ani.id === 'backdropAnimation');
   const maxBreakpoint = breakpoints[breakpoints.length - 1];
   const minBreakpoint = breakpoints[0];
+  const ionPage = baseEl.querySelector('.ion-page') as any;
+  const ionPageHeight = ionPage!.clientHeight
 
   const enableBackdrop = () => {
     baseEl.style.setProperty('pointer-events', 'auto');
@@ -146,10 +148,7 @@ export const createSheetGesture = (
   // If `prefersScrollingWhenScrolledToEdge` is false, we need to set the height of the ion-page to display all the content.
   // Otherwise, the content will be cut off at the bottom when the sheet is visible for the first time.
   if (!prefersScrollingWhenScrolledToEdge) {
-    const transformSnapNumber = (1 - currentBreakpoint) * 100;
-    const ionPageHeight = 100 - transformSnapNumber;
-    const ionPage = baseEl.querySelector('.ion-page');
-    (ionPage as any).style.setProperty('height', `${ionPageHeight}%`);
+    ionPage.style.setProperty('padding-bottom', `calc(${ionPageHeight}px - ${currentBreakpoint * 100}vh)`);
   }
 
   const canStart = (detail: GestureDetail) => {
@@ -192,16 +191,6 @@ export const createSheetGesture = (
      */
     if (contentEl) {
       contentEl.scrollY = false;
-
-      if (!prefersScrollingWhenScrolledToEdge) {
-        // unset height to its initial value
-        // This will be reset to 100% when it was assigned by
-        // ion-modal > .ion-page { height: 100% }
-        // This is necessary else the element will have
-        // a lot of white space at the bottom
-        const ionPage = baseEl.querySelector('.ion-page');
-        (ionPage as any).style.removeProperty('height');
-      }
     }
 
     raf(() => {
@@ -256,6 +245,12 @@ export const createSheetGesture = (
 
     offset = clamp(0.0001, processedStep, maxStep);
     animation.progressStep(offset);
+
+    if (!prefersScrollingWhenScrolledToEdge) {
+      const movingBreakpoint = 100 - processedStep * 100;
+      const minBreakpoint = Math.min((movingBreakpoint), 100);
+      ionPage.style.setProperty('padding-bottom', `calc(${ionPageHeight}px - ${minBreakpoint}vh)`);
+    }
   };
 
   const onEnd = (detail: GestureDetail) => {
@@ -366,12 +361,8 @@ export const createSheetGesture = (
                     contentEl.scrollY = true;
                   }
 
-                  // If `prefersScrollingWhenScrolledToEdge` is false, we need to set the height of the ion-page to display all the content.
                   if (!prefersScrollingWhenScrolledToEdge) {
-                    const transformSnapNumber = (1 - snapToBreakpoint) * 100;
-                    const ionPageHeight = 100 - transformSnapNumber;
-                    const ionPage = baseEl.querySelector('.ion-page');
-                    (ionPage as any).style.setProperty('height', `${ionPageHeight}%`);
+                    ionPage.style.setProperty('padding-bottom', `calc(${ionPageHeight}px - ${currentBreakpoint * 100}vh)`);
                   }
 
                   /**
