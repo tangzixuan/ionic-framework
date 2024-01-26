@@ -69,7 +69,8 @@
     "sass": "^1.33.0",
     "serve": "^14.0.1",
     "stylelint": "^13.13.1",
-    "stylelint-order": "^4.1.0"
+    "stylelint-order": "^4.1.0",
+    "typescript-todo-or-die-plugin": "^0.6.0"
   },
   "scripts": {
     "build": "npm run clean && npm run build.css && stencil build --es5 --docs-json dist/docs.json",

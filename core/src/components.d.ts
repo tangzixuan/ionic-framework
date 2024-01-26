@@ -460,6 +460,7 @@ export namespace Components {
           * Set to `"block"` for a full-width button or to `"full"` for a full-width button with square corners and no left or right borders.
          */
         "expand"?: 'full' | 'block';
+        "featureFlagProp"?: boolean;
         /**
           * Set to `"clear"` for a transparent button that resembles a flat button, to `"outline"` for a transparent button with a border, or to `"solid"` for a button with a filled background. The default fill is `"solid"` except inside of a toolbar, where the default is `"clear"`.
          */
@@ -5147,6 +5148,7 @@ declare namespace LocalJSX {
           * Set to `"block"` for a full-width button or to `"full"` for a full-width button with square corners and no left or right borders.
          */
         "expand"?: 'full' | 'block';
+        "featureFlagProp"?: boolean;
         /**
           * Set to `"clear"` for a transparent button that resembles a flat button, to `"outline"` for a transparent button with a border, or to `"solid"` for a button with a filled background. The default fill is `"solid"` except inside of a toolbar, where the default is `"clear"`.
          */

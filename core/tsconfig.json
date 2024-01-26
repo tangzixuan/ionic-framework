@@ -1,5 +1,19 @@
 {
   "compilerOptions": {
+    "plugins": [
+      {
+        "name": "typescript-todo-or-die-plugin",
+        "options": {
+          "after_date": {
+            "warn": "1w"
+          },
+          "when": {
+            "warn": "1p"
+          }
+        },
+        "additionalKeywords": ["FEATURE_FLAG_EXPIRATION"]
+      }
+    ],
     "strict": true,
     "alwaysStrict": true,
     "allowSyntheticDefaultImports": true,
@@ -34,7 +48,7 @@
     }
   },
   "include": [
-    "src",
+    "src"
   ],
   "exclude": [
     "node_modules"

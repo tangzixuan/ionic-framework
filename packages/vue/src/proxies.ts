@@ -144,6 +144,7 @@ export const IonBreadcrumbs = /*@__PURE__*/ defineContainer<JSX.IonBreadcrumbs>(
 
 
 export const IonButton = /*@__PURE__*/ defineContainer<JSX.IonButton>('ion-button', defineIonButton, [
+  'featureFlagProp',
   'color',
   'buttonType',
   'disabled',

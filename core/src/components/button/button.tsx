@@ -39,6 +39,12 @@ export class Button implements ComponentInterface, AnchorInterface, ButtonInterf
   @Element() el!: HTMLElement;
 
   /**
+   * @internal
+   */
+  // FEATURE_FLAG_EXPIRATION::after_date("2024-01-01"):
+  @Prop() featureFlagProp?: boolean;
+
+  /**
    * The color to use from your application's color palette.
    * Default options are: `"primary"`, `"secondary"`, `"tertiary"`, `"success"`, `"warning"`, `"danger"`, `"light"`, `"medium"`, and `"dark"`.
    * For more information on colors, see [theming](/docs/theming/basics).
@@ -191,6 +197,12 @@ export class Button implements ComponentInterface, AnchorInterface, ButtonInterf
     this.inListHeader = !!this.el.closest('ion-list-header');
     this.inItem = !!this.el.closest('ion-item') || !!this.el.closest('ion-item-divider');
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+  }
+
+  componentDidLoad() {
+    if (this.featureFlagProp) {
+      console.log('feature flag enabled')
+    }
   }
 
   private get hasIconOnly() {
