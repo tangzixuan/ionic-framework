@@ -16,6 +16,12 @@ export class App implements ComponentInterface {
   @Element() el!: HTMLElement;
 
   componentDidLoad() {
+
+  console.log('always here')
+    if (Build.isDev) {
+      console.log('YEEHAWWWWWWWW')
+    }
+
     if (Build.isBrowser) {
       rIC(async () => {
         const isHybrid = isPlatform(window, 'hybrid');
