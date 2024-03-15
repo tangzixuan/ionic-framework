@@ -17,6 +17,11 @@
       .hidden {
         display: none;
       }
+
+      #async-options-open-update,
+      #async-options-open-update ion-item {
+        transition: none;
+      }
     </style>
   </head>
 
@@ -30,6 +35,7 @@
 
       <ion-content>
         <ion-button id="toggle-button" onclick="toggle()">Make async changes</ion-button>
+        <ion-button id="open-async-button" onclick="openAndChange()">Open item sliding and make async changes</ion-button>
         <ion-list>
           <ion-item-sliding id="async-item">
             <ion-item-options side="end">
@@ -45,12 +51,19 @@
               <ion-item-option>Option</ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
+          <ion-item-sliding id="async-options-open-update">
+            <ion-item>item-sliding opened and ion-item-options updated async</ion-item>
+            <ion-item-options side="end">
+              <ion-item-option>Option</ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
         </ion-list>
 
         <script>
           const slidingAsyncItem = document.querySelector('#async-item');
           const slidingAsyncOptionsAdded = document.querySelector('#async-options-added');
           const slidingAsyncOptionsRemoved = document.querySelector('#async-options-removed');
+          const slidingAsyncoptionsOpenUpdate = document.querySelector('#async-options-open-update');
 
           [slidingAsyncOptionsAdded, slidingAsyncOptionsRemoved].forEach((itemSliding) => {
             itemSliding.querySelector('ion-item').onclick = () => {
@@ -81,6 +94,19 @@
 
             const toggleButton = document.querySelector('#toggle-button');
             toggleButton.classList.add('hidden');
+          }
+
+          async function openAndChange() {
+            await slidingAsyncoptionsOpenUpdate.open('end');
+
+            requestAnimationFrame(() => {
+              const options = slidingAsyncoptionsOpenUpdate.querySelector('ion-item-options[side="end"]');
+
+              const option = document.createElement('ion-item-option');
+              option.innerHTML = `Option 2`;
+
+              options.appendChild(option);
+            });
           }
         </script>
       </ion-content>

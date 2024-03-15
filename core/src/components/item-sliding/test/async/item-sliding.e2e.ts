@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { configs, test } from '@utils/test/playwright';
 
-configs({ modes: ['ios'], directions: ['ltr'] }).forEach(({ title, config }) => {
+configs({ modes: ['ios'], directions: ['ltr'] }).forEach(({ title, screenshot, config }) => {
   test.describe(title('item-sliding: async'), () => {
     test.beforeEach(async ({ page }) => {
       await page.goto(`/src/components/item-sliding/test/async`, config);
@@ -34,6 +34,21 @@ configs({ modes: ['ios'], directions: ['ltr'] }).forEach(({ title, config }) => 
       await itemEl.click();
 
       await expect(itemSlidingEl).toHaveClass(/item-sliding-active-slide/);
+    });
+
+    test('should adjust transform when options are added after opening', async ({ page }) => {
+      test.info().annotations.push({
+        type: 'issue',
+        description: 'https://github.com/ionic-team/ionic-framework/issues/28662',
+      });
+
+      const button = page.locator('#open-async-button');
+      const itemSliding = page.locator('ion-item-sliding#async-options-open-update');
+
+      await button.click();
+      await page.waitForChanges();
+
+      await expect(itemSliding).toHaveScreenshot(screenshot('item-sliding-async-append-when-open'))
     });
   });
 });
