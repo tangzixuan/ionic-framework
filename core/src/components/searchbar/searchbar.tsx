@@ -1,3 +1,5 @@
+import ghostDuotone from '@phosphor-icons/core/assets/duotone/ghost-duotone.svg';
+import backspace from '@phosphor-icons/core/assets/regular/backspace.svg';
 import type { ComponentInterface, EventEmitter } from '@stencil/core';
 import { Component, Element, Event, Host, Method, Prop, State, Watch, forceUpdate, h } from '@stencil/core';
 import { debounceEvent, raf, componentOnReady, inheritAttributes } from '@utils/helpers';
@@ -618,15 +620,23 @@ export class Searchbar implements ComponentInterface {
    * @returns {string} The icon to use for the clear icon.
    */
   get searchbarClearIcon(): string {
-    const theme = getIonTheme(this);
-    const icon = this.clearIcon;
-    const defaultIcon = theme === 'ios' ? closeCircle : closeSharp;
-
-    if (icon !== undefined) {
-      // Icon is set on the component.
-      return icon;
+    // Return the icon if it is explicitly set
+    if (this.clearIcon) {
+      return this.clearIcon;
     }
 
+    // Determine the theme and map to default icons
+    const theme = getIonTheme(this);
+    const defaultIcons = {
+      ios: closeCircle,
+      ionic: backspace,
+      md: closeSharp
+    };
+
+    // Get the default icon based on the theme, falling back to 'md' icon if necessary
+    const defaultIcon = defaultIcons[theme] || defaultIcons.md;
+
+    // Return the configured searchbar clear icon or the default icon
     return config.get('searchbarClearIcon', defaultIcon);
   }
 
@@ -639,15 +649,23 @@ export class Searchbar implements ComponentInterface {
    * @returns {string} The icon to use for the search icon.
    */
   get searchbarSearchIcon(): string {
-    const theme = getIonTheme(this);
-    const icon = this.searchIcon;
-    const defaultIcon = theme === 'ios' ? searchOutline : searchSharp;
-
-    if (icon !== undefined) {
-      // Icon is set on the component.
-      return icon;
+    // Return the icon if it is explicitly set
+    if (this.searchIcon) {
+      return this.searchIcon;
     }
 
+    // Determine the theme and map to default icons
+    const theme = getIonTheme(this);
+    const defaultIcons = {
+      ios: searchOutline,
+      ionic: ghostDuotone,
+      md: searchSharp
+    };
+
+    // Get the default icon based on the theme, falling back to 'md' icon if necessary
+    const defaultIcon = defaultIcons[theme] || defaultIcons.md;
+
+    // Return the configured searchbar search icon or the default icon
     return config.get('searchbarSearchIcon', defaultIcon);
   }
 

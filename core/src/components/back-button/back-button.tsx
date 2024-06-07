@@ -1,4 +1,4 @@
-import caretLeft from '@phosphor-icons/core/assets/regular/caret-left.svg';
+import ghostDuotone from '@phosphor-icons/core/assets/duotone/ghost-duotone.svg';
 import type { ComponentInterface } from '@stencil/core';
 import { Component, Element, Host, Prop, h } from '@stencil/core';
 import type { ButtonInterface } from '@utils/element-interface';
@@ -90,7 +90,7 @@ export class BackButton implements ComponentInterface, ButtonInterface {
     const theme = getIonTheme(this);
     const defaultIcons = {
       ios: chevronBack,
-      ionic: caretLeft,
+      ionic: ghostDuotone,
       md: arrowBackSharp
     };
 
