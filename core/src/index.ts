@@ -1,5 +1,4 @@
 import 'ionicons';
-import '@phosphor-icons/core';
 
 export { createAnimation } from './utils/animation/animation';
 export { getIonPageElement } from './utils/transition';
