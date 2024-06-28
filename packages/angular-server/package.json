@@ -1,6 +1,6 @@
 {
   "name": "@ionic/angular-server",
-  "version": "8.2.2",
+  "version": "8.2.3",
   "description": "Angular SSR Module for Ionic",
   "keywords": [
     "ionic",
@@ -32,7 +32,8 @@
     "lint": "eslint . --ext .ts && npm run prettier",
     "lint.fix": "eslint . --ext .ts --fix && npm run prettier.fix",
     "prettier": "prettier \"**/*.ts\" --check",
-    "prettier.fix": "prettier \"**/*.ts\" --write"
+    "prettier.fix": "prettier \"**/*.ts\" --write",
+    "sync": "sh ./scripts/sync.sh"
   },
   "peerDependencies": {
     "@angular/core": ">=16.0.0",
@@ -52,6 +53,7 @@
     "@angular/platform-server": "^16.0.0",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^2.0.0",
+    "@types/node": "^20.14.9",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.2",
@@ -62,6 +64,6 @@
   },
   "prettier": "@ionic/prettier-config",
   "dependencies": {
-    "@ionic/core": "^8.2.2"
+    "@ionic/core": "^8.2.3"
   }
 }
